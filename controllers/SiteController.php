@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\LogForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -125,4 +126,17 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+    public function actionLog()
+    {
+
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        $model = new LogForm();
+
+        return $this->render('log', compact('model'));
+
+    }
+
+
 }
