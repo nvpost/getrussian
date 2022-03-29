@@ -13,6 +13,7 @@ class LogForm extends Model
     public function rules() {
         return [
             [['username', 'password'], 'required', 'message' => 'Заполните поле'],
+            ['username', 'unique', 'targetClass' => Users::class,  'message' => 'Этот логин уже занят'],
         ];
     }
 

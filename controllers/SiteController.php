@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\LogForm;
+use app\models\User;
+use app\models\Users;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -11,7 +13,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
-class SiteController extends Controller
+class SiteController extends appController
 {
     /**
      * {@inheritdoc}
@@ -133,6 +135,14 @@ class SiteController extends Controller
             return $this->goHome();
         }
         $model = new LogForm();
+        if($model->load(\Yii::$app->request->post()) && $model->validate()){
+            $user = new Users();
+            $user->username = $model->username;
+            $user->password = \Yii::$app->security->generatePasswordHash($model->password);
+            if($user->save()){
+                return $this->goHome();
+            }
+        }
 
         return $this->render('log', compact('model'));
 
